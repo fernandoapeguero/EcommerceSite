@@ -3,11 +3,11 @@ import express from "express";
 const port = 9000;
 const app = express();
 
-const one: number = 10;
-const two: number = 2;
-const three: boolean = true;
+const one = 10;
+const two = 2;
+const three = true;
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("hello world");
 });
 

@@ -1,14 +1,28 @@
 import express from "express";
+import { listings } from "../listing";
 
 const port = 9000;
 const app = express();
 
-const one = 10;
-const two = 2;
-const three = true;
+// middleware to parse json from request.
+app.use(express.json());
 
-app.get("/", (_req, res) => {
-  res.send("hello world");
+// /listings route
+app.get("/listing", (_req, res) => {
+  res.send(listings);
+});
+
+// /delete listing route
+app.post("/delete-listing", (req, res) => {
+  const { id }: { id: string } = req.body;
+
+  for (let i = 0; i < listings.length; i++) {
+    if (listings[i].id === id) {
+      return res.send(listings.splice(i, 1));
+    }
+  }
+
+  return res.send("failed to find item.");
 });
 
 app.listen(port, () => {

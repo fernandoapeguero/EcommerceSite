@@ -1,3 +1,4 @@
+// explicit definition for elements in the arrray as a interface
 interface Listing {
   id: string;
   title: string;

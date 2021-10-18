@@ -1,11 +1,12 @@
 import express from "express";
-import { schema } from "./graphql";
+
+import { typeDefs, resolvers } from "./graphql";
 import { ApolloServer } from "apollo-server-express";
 
 const port = 9000;
 const app = express();
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ typeDefs, resolvers });
 
 (async function () {
   await server.start();

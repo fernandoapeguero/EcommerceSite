@@ -1,11 +1,11 @@
 import { ObjectId } from "mongodb";
-import { Database, Listing } from "../lib/types";
+import { Database, Listing } from "../../../lib/types";
 
-export const resolvers = {
+export const listingResolvers = {
   Query: {
     listings: async (
       _root: undefined,
-      _args: {},
+      _args: unknown,
       { db }: { db: Database }
     ): Promise<Listing[]> => {
       return await db.listings.find({}).toArray();

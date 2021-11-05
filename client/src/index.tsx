@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+import { Listings } from "./sections";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <h1> Hello Is it me you are looking for.</h1>
+    <Listings />
   </React.StrictMode>,
   document.getElementById("root")
 );

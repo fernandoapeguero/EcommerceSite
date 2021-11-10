@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { server } from "../../lib";
+import { ListingData } from "./types";
 
 const LISTINGS = `
   query Listings {
@@ -8,6 +9,10 @@ const LISTINGS = `
        title
        price
        address
+       numOfGuests
+       numOfBeds
+       numOfBaths
+       rating
      }
   }
 `;
@@ -19,9 +24,9 @@ export const Listings = ({ title }: PropsInterface) => {
   const [listing, setListing] = useState([]);
 
   const fetchListings = async () => {
-    console.log("Here!");
+    console.log();
 
-    const response = await server.fetch({ query: LISTINGS });
+    const response = await server.fetch<ListingData>({ query: LISTINGS });
 
     console.log(response);
   };

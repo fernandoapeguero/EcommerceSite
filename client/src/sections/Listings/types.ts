@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 interface Listing {
   id: string;
   title: string;
@@ -12,4 +14,12 @@ interface Listing {
 
 export interface ListingData {
   listings: Listing;
+}
+
+export interface DeleteListingData {
+  deleteListing: Listing;
+}
+
+export interface DeleteListingVariables {
+  id: string;
 }

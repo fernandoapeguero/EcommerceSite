@@ -37,7 +37,7 @@ interface PropsInterface {
 }
 
 export const Listings = ({ title }: PropsInterface) => {
-  const { data } = useQuery<ListingData>(LISTINGS);
+  const { data, refetch } = useQuery<ListingData>(LISTINGS);
 
   const deleteListing = async (id: string) => {
     // delte a listing from the graphql server
@@ -47,6 +47,8 @@ export const Listings = ({ title }: PropsInterface) => {
         id,
       },
     });
+
+    refetch();
   };
 
   const listings = data ? data.listings : null;

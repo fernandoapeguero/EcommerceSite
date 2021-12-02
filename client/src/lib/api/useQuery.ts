@@ -7,6 +7,10 @@ interface State<TData> {
   error: boolean;
 }
 
+interface QueryResult<TData> extends State<TData> {
+  refetch: () => void;
+}
+
 export const useQuery = <TData = any>(query: string) => {
   const [state, setState] = useState<State<TData>>({
     data: null,
@@ -19,7 +23,11 @@ export const useQuery = <TData = any>(query: string) => {
       try {
         setState({ data: null, loading: true, error: false });
 
-        const { data } = await server.fetch<TData>({ query });
+        const { data, errors } = await server.fetch<TData>({ query });
+
+        if (errors && errors.length) {
+          throw new Error(errors[0].message);
+        }
         setState({ data, loading: false, error: false });
       } catch (err) {
         setState({ data: null, loading: false, error: true });

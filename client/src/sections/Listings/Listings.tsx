@@ -1,8 +1,7 @@
 import React from "react";
-import { server, useQuery } from "../../lib";
+import { useQuery, useMutation } from "../../lib";
 import {
   ListingData,
-  Listing,
   DeleteListingData,
   DeleteListingVariables,
 } from "./types";
@@ -22,7 +21,7 @@ const LISTINGS = `
   }
 `;
 
-const DELETELISTING = `
+const DELETE_LISTING = `
 
   mutation DeleteListing($id: ID!) {
 
@@ -37,16 +36,15 @@ interface PropsInterface {
 }
 
 export const Listings = ({ title }: PropsInterface) => {
-  const { data, loading, refetch } = useQuery<ListingData>(LISTINGS);
+  const { data, loading, error, refetch } = useQuery<ListingData>(LISTINGS);
+  const [
+    deleteListing,
+    { loading: deleteListingLoading, error: deleteListingError },
+  ] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING);
 
-  const deleteListing = async (id: string) => {
+  const handleDeleteListing = async (id: string) => {
     // delte a listing from the graphql server
-    await server.fetch<DeleteListingData, DeleteListingVariables>({
-      query: DELETELISTING,
-      variables: {
-        id,
-      },
-    });
+    await deleteListing({ id });
 
     refetch();
   };
@@ -59,7 +57,9 @@ export const Listings = ({ title }: PropsInterface) => {
         return (
           <li key={listing.id}>
             {listing.title}
-            <button onClick={() => deleteListing(listing.id)}>Delete</button>
+            <button onClick={() => handleDeleteListing(listing.id)}>
+              Delete
+            </button>
           </li>
         );
       })}
@@ -70,10 +70,26 @@ export const Listings = ({ title }: PropsInterface) => {
     return <h2>Loading Data....</h2>;
   }
 
+  if (error) {
+    return <h2>Uh oh! something when wrong - please try again later.</h2>;
+  }
+
+  const deleteListingLoadingMessae = deleteListingLoading ? (
+    <h4>Deletin in progress...</h4>
+  ) : null;
+
+  const deleteListingErrorMessage = deleteListingError ? (
+    <h4>
+      Uh oh! Something wen wrong with deleting - please try again later :(
+    </h4>
+  ) : null;
+
   return (
     <div>
       <h2>Listing</h2>
       {listingsList}
+      {deleteListingLoadingMessae}
+      {deleteListingErrorMessage}
     </div>
   );
 };
